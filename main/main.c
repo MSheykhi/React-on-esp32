@@ -11,8 +11,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-static const char *SSID = "MY WIFI SSID";
-static const char *PASS = "MY WIFI PASS";
+static const char *SSID = "BEEWAZ";
+static const char *PASS = "9128638935";
 
 static const char *TAG = "SERVER";
 #define MAX_APs 20
@@ -209,13 +209,6 @@ static void init_server()
       .handler = on_ap_to_sta};
   httpd_register_uri_handler(server, &ap_to_sta_url);
 
-  httpd_uri_t web_magnetometer_url = {
-      .uri = "/ws-api/magnetometer",
-      .method = HTTP_GET,
-      .handler = on_magnetometer,
-      .is_websocket = true};
-  httpd_register_uri_handler(server, &web_magnetometer_url);
-
   httpd_uri_t servo_url = {
       .uri = "/ws-api/servo",
       .method = HTTP_GET,
@@ -239,7 +232,13 @@ static void init_server()
 
 void start_mdns_service()
 {
-  mdns_init();
+  esp_err_t err = mdns_init();
+  if (err)
+  {
+    printf("MDNS Init failed: %d\n", err);
+    return;
+  }
+  ESP_LOGI(TAG, "Starting mDNS service");
   mdns_hostname_set("my-esp32");
   mdns_instance_name_set("LEARN esp32 thing");
 }

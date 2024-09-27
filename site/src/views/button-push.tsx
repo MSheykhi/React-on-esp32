@@ -5,7 +5,7 @@ export function PushButton() {
   const [btnPressed, setBtnPressed] = useState<boolean>(false);
 
   useEffect(() => {
-    var socket = new WebSocket("ws://my-esp32.local/ws-api/btn-push");
+    var socket = new WebSocket("ws://192.168.10.105/ws-api/btn-push");
     socket.onopen = () => socket.send("ready for button press");
 
     socket.onmessage = (event) => {

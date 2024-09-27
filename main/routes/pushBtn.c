@@ -7,7 +7,7 @@
 
 #define BTN 12
 
-static xSemaphoreHandle btn_sem;
+static SemaphoreHandle_t btn_sem;
 static int client_session_id;
 
 static void IRAM_ATTR on_btn_pushed(void *args)
@@ -35,8 +35,8 @@ void init_btn(void)
 
   btn_sem = xSemaphoreCreateBinary();
   xTaskCreate(btn_push_task, "btn_push_task", 2048, NULL, 5, NULL);
-  gpio_pad_select_gpio(BTN);
   gpio_set_direction(BTN, GPIO_MODE_INPUT);
+  gpio_set_pull_mode(BTN, GPIO_PULLUP_ONLY);
   gpio_set_intr_type(BTN, GPIO_INTR_ANYEDGE);
   gpio_install_isr_service(0);
   gpio_isr_handler_add(BTN, on_btn_pushed, NULL);

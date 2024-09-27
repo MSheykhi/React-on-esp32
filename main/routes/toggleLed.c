@@ -1,11 +1,10 @@
 #include "_routes.h"
 #include "driver/gpio.h"
 
-#define LED 2
+#define LED 7
 
 void init_led(void)
 {
-  gpio_pad_select_gpio(LED);
   gpio_set_direction(LED, GPIO_MODE_OUTPUT);
 }
 
